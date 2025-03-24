@@ -1,0 +1,17 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins
+    restart: always
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker-in-Docker (필요한 경우)
+      - ~/.ssh:/root/.ssh:ro  # 읽기 전용 마운트
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # 초기 설정 마법사 비활성화
+      - JENKINS_OPTS=--httpPort=8080
+      - TZ=Asia/Seoul  # 한국 시간대 설정
